@@ -1,9 +1,13 @@
 import React from 'react';
+import AddEventForm from '../../Components/AddEventForm/AddEventForm';
 
 const RootLayout = () => {
   return (
     <div>
-      <h1 className='text-center'>Hii world</h1>
+      {/* Add Event Form */}
+      <div className='max-w-[1200px] mx-auto px-4 mt-20'>
+      <AddEventForm></AddEventForm>
+      </div>
     </div>
   );
 };
