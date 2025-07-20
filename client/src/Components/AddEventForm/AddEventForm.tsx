@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 interface EventFormData {
   title: string;
@@ -10,6 +11,7 @@ interface EventFormData {
 }
 
 const AddEventForm: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<EventFormData>({
     title: "",
     date: "",
@@ -54,6 +56,7 @@ const AddEventForm: React.FC = () => {
       });
       setSuccessMessage("Event created successfully!");
       setTimeout(() => setSuccessMessage(null), 3000);
+      navigate("/")
     } catch (err) {
       console.error(err);
       setError("Failed to create event.");
@@ -63,7 +66,7 @@ const AddEventForm: React.FC = () => {
   return (
     <div>
     <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white rounded-xl shadow">
-      <h2 className="text-xl font-semibold">Add New Event</h2>
+      <h1 className="text-center">Add New Event</h1>
 
       <input
         type="text"

@@ -1,11 +1,15 @@
-// server/src/routes/events.ts
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 
-// In-memory store (can be moved to separate file)
+// In-memory store
 const events: any[] = [];
 
 const router = Router();
+
+// ✅ GET all events
+router.get("/", (req, res) => {
+  res.json(events);
+});
 
 router.post("/", (req, res) => {
   const { title, notes } = req.body;

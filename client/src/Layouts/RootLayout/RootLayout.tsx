@@ -1,12 +1,12 @@
 import React from 'react';
-import AddEventForm from '../../Components/AddEventForm/AddEventForm';
+import HomePage from '../../Pages/Home/HomePage';
 
 const RootLayout = () => {
   return (
-    <div>
-      {/* Add Event Form */}
-      <div className='max-w-[1200px] mx-auto px-4 mt-20'>
-      <AddEventForm></AddEventForm>
+    <div className="min-h-screen bg-gray-100">
+      {/* Home Page */}
+      <div>
+         <HomePage></HomePage>
       </div>
     </div>
   );
