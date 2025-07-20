@@ -1,0 +1,51 @@
+:root {
+  --body_background: white;
+  --body_color: black;
+}
+
+.dark {
+  --body_background: black;
+  --body_color: white;
+}
+
+body {
+   background-color: var(--body_background);
+  color: var(--body_color);
+ 
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+@import 'tailwindcss';
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: rgb(137, 91, 0);
+  --color-secondary: rgb(137, 91, 0);
+}
+
+.button{
+  @apply bg-primary px-3 py-2 rounded-sm text-white font-bold cursor-pointer hover:bg-white hover:text-primary duration-500;
+}
+
+h1{
+  @apply text-4xl font-bold;
+}
+h2{
+  @apply text-2xl font-bold;
+}
+h3{
+  @apply text-xl font-bold;
+}
+h4{
+  @apply text-lg font-semibold;
+}
+h5{
+  @apply font-semibold;
+}
