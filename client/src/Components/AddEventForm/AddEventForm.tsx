@@ -37,7 +37,7 @@ const AddEventForm: React.FC = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/events", {
+      const res = await axios.post("http://localhost:3000/events", {
         title: formData.title,
         date: formData.date,
         time: formData.time,
