@@ -14,7 +14,11 @@ type EventProps = {
   onToggleArchive: (id: string) => void;
 };
 
-const EventCard: React.FC<EventProps> = ({ event, onDelete, onToggleArchive }) => {
+const EventCard: React.FC<EventProps> = ({
+  event,
+  onDelete,
+  onToggleArchive,
+}) => {
   return (
     <div className="bg-white shadow rounded-2xl p-4 mb-4 border">
       <div className="flex justify-between items-center">
@@ -37,12 +41,15 @@ const EventCard: React.FC<EventProps> = ({ event, onDelete, onToggleArchive }) =
       {event.notes && <p className="mt-2 text-gray-700">{event.notes}</p>}
 
       <div className="mt-4 flex gap-2">
+        {/* Delete */}
         <button
           onClick={() => onDelete(event.id)}
           className="px-4 py-1 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200"
         >
           Delete
         </button>
+
+        {/* Archived */}
         <button
           onClick={() => onToggleArchive(event.id)}
           className={`px-4 py-1 text-sm rounded ${

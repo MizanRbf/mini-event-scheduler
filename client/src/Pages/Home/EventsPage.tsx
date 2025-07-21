@@ -1,8 +1,9 @@
-// src/pages/EventsPage.tsx
 import React, { useEffect, useState } from "react";
-import EventCard from "../../Components/EventCard";
-import { Link, useNavigate } from "react-router";
+import EventCard from "../../Components/EventCard/EventCard";
+import { Link } from "react-router";
+import axios from "axios";
 
+// Event type
 type EventType = {
   id: string;
   title: string;
@@ -13,46 +14,46 @@ type EventType = {
   archived: boolean;
 };
 
-const EventsPage = () => {
+const EventsPage: React.FC = () => {
   const [events, setEvents] = useState<EventType[]>([]);
 
+  // Fetch Events
   useEffect(() => {
-  console.log("Fetching events...");
-  fetch("http://localhost:3000/events")
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+    const fetchEvents = async () => {
+      try {
+        const res = await axios.get<EventType[]>(
+          "http://localhost:3000/events"
+        );
+
+        const sorted = res.data.sort(
+          (a, b) =>
+            new Date(`${a.date}T${a.time}`).getTime() -
+            new Date(`${b.date}T${b.time}`).getTime()
+        );
+        setEvents(sorted);
+      } catch (error) {
+        console.log(error);
       }
-      return res.json();
-    })
-    .then((data) => {
-      console.log("Fetched Events:", data); 
-      const sorted = data.sort(
-        (a: EventType, b: EventType) =>
-          new Date(`${a.date}T${a.time}`).getTime() -
-          new Date(`${b.date}T${b.time}`).getTime()
-      );
-      setEvents(sorted);
-    })
-    .catch((err) => {
-      console.error("Error fetching events:", err);
-    });
-}, []);
+    };
+    fetchEvents();
+  }, []);
 
-
-  const handleDelete = (id: string) => {
-    fetch(`http://localhost:3000/events/${id}`, {
-      method: "DELETE",
-    }).then(() => setEvents(events.filter((e) => e.id !== id)));
+  // Handle Delete
+  const handleDelete = async (id: string) => {
+    try {
+      await axios.delete(`http://localhost:3000/events/${id}`);
+      setEvents(events.filter((e) => e.id !== id));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  // Handle Archived
   const handleArchiveToggle = (id: string) => {
     setEvents((prev) =>
-      prev.map((e) =>
-        e.id === id ? { ...e, archived: !e.archived } : e
-      )
+      prev.map((e) => (e.id === id ? { ...e, archived: !e.archived } : e))
     );
-    // Optionally: make PUT request to persist archive status
+    // Optionally:PUT request to persist archive status
   };
 
   return (
@@ -68,7 +69,7 @@ const EventsPage = () => {
       ))}
 
       <Link to="/addEventForm">
-      <button className="btn text-xl">Add Events</button>
+        <button className="btn text-xl">Add Events</button>
       </Link>
     </div>
   );

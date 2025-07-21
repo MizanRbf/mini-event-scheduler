@@ -1,7 +1,7 @@
-import React from 'react';
-import EventsPage from './EventsPage';
+import React from "react";
+import EventsPage from "./EventsPage";
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   return (
     <div>
       <EventsPage></EventsPage>

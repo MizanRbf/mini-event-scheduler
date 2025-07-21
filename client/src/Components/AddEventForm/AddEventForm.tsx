@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
+import FormInput from "./FormInput";
+import FormTextarea from "./FormTextarea";
+import CategoryDisplay from "./CategoryDisplay";
 import { useNavigate } from "react-router";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 interface EventFormData {
   title: string;
@@ -20,24 +24,28 @@ const AddEventForm: React.FC = () => {
     category: "",
   });
 
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // Handle Change
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(null);
   };
 
+  // Handle Submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const { title, date, time } = formData;
 
     if (!title || !date || !time) {
-      setError("Title, date, and time are required.");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Title, date and time are required.",
+      });
       return;
     }
 
+    // Data post to Server
     try {
       const res = await axios.post("http://localhost:3000/events", {
         title: formData.title,
@@ -54,67 +62,80 @@ const AddEventForm: React.FC = () => {
         notes: "",
         category: newEvent.category || "",
       });
-      setSuccessMessage("Event created successfully!");
-      setTimeout(() => setSuccessMessage(null), 3000);
-      navigate("/")
+
+      // Success Alert
+      await Swal.fire({
+        icon: "success",
+        title: "Event Created!",
+        text: "Your event has been created successfully.",
+        timer: 3000,
+        showConfirmButton: false,
+      });
+
+      navigate("/");
     } catch (err) {
       console.error(err);
-      setError("Failed to create event.");
+      // Error Alert
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to create event. Please try again.",
+      });
     }
   };
 
   return (
     <div>
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white rounded-xl shadow">
-      <h1 className="text-center">Add New Event</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 p-4 bg-white rounded-xl shadow"
+      >
+        <h1 className="text-center">Add New Event</h1>
 
-      <input
-        type="text"
-        name="title"
-        placeholder="Event Title"
-        className="input input-bordered w-full"
-        value={formData.title}
-        onChange={handleChange}
-        required
-      />
+        {/* Event Title */}
+        <FormInput
+          type="text"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="Event Title"
+          required
+        />
 
-      <input
-        type="date"
-        name="date"
-        className="input input-bordered w-full"
-        value={formData.date}
-        onChange={handleChange}
-        required
-      />
+        {/* Event Date */}
+        <FormInput
+          type="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          required
+        />
 
-      <input
-        type="time"
-        name="time"
-        className="input input-bordered w-full"
-        value={formData.time}
-        onChange={handleChange}
-        required
-      />
+        {/* Event Time */}
+        <FormInput
+          type="time"
+          name="time"
+          value={formData.time}
+          onChange={handleChange}
+          required
+        />
 
-      <textarea
-        name="notes"
-        placeholder="Additional Notes"
-        className="textarea textarea-bordered w-full"
-        value={formData.notes}
-        onChange={handleChange}
-      ></textarea>
+        {/* Event Notes */}
+        <FormTextarea
+          name="notes"
+          value={formData.notes}
+          onChange={handleChange}
+          placeholder="Additional Notes"
+        />
 
-      <div className="text-sm text-gray-600">
-        <strong>Category:</strong> {formData.category || "Will be auto-generated"}
-      </div>
+        {/* Event Category */}
+        <CategoryDisplay category={formData.category} />
 
-      <button type="submit" className="btn btn-primary w-full">
-        Add Event
-      </button>
-
-      {error && <div className="text-red-500">{error}</div>}
-      {successMessage && <div className="text-green-500">{successMessage}</div>}
-    </form>
+        {/* Submit Button */}
+        <button type="submit" className="btn btn-primary w-full">
+          Add Event
+        </button>
+      </form>
     </div>
   );
 };

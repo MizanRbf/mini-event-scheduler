@@ -14,6 +14,8 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const { title, notes } = req.body;
 
+
+  // Simple AI implement
   const text = `${title} ${notes || ""}`.toLowerCase();
   let category: "Work" | "Personal" | "Other" = "Other";
 
@@ -23,6 +25,8 @@ router.post("/", (req, res) => {
     category = "Personal";
   }
 
+
+  
   const event = {
     id: uuidv4(),
     ...req.body,
