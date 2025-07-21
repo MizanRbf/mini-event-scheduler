@@ -1,4 +1,5 @@
 import React from "react";
+import { Trash2, ArchiveRestore, Archive } from "lucide-react"; // You can also use Heroicons
 
 type EventProps = {
   event: {
@@ -20,44 +21,56 @@ const EventCard: React.FC<EventProps> = ({
   onToggleArchive,
 }) => {
   return (
-    <div className="bg-white shadow rounded-2xl p-4 mb-4 border">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">{event.title}</h2>
+    <div className="bg-white border border-gray-200 shadow-sm rounded-lg p-5 transition-all hover:shadow-md">
+      <div className="flex justify-between items-start mb-2">
+        <div>
+          <h2 className="text-xl font-bold text-gray-800">{event.title}</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            📅 {event.date} ⏰ {event.time}
+          </p>
+        </div>
         <span
-          className={`text-sm font-medium px-2 py-1 rounded-full ${
+          className={`text-xs font-semibold px-3 py-1 rounded-full shadow-sm ${
             event.category === "Work"
-              ? "bg-blue-100 text-blue-800"
+              ? "bg-blue-100 text-blue-700"
               : event.category === "Personal"
-              ? "bg-green-100 text-green-800"
-              : "bg-gray-200 text-gray-800"
+              ? "bg-green-100 text-green-700"
+              : "bg-gray-100 text-gray-700"
           }`}
         >
           {event.category}
         </span>
       </div>
-      <p className="text-sm text-gray-600 mt-1">
-        {event.date} at {event.time}
-      </p>
-      {event.notes && <p className="mt-2 text-gray-700">{event.notes}</p>}
 
-      <div className="mt-4 flex gap-2">
-        {/* Delete */}
+      {event.notes && (
+        <p className="text-sm text-gray-600 mt-3 border-t pt-3">
+          {event.notes}
+        </p>
+      )}
+
+      <div className="mt-4 flex gap-3">
+        {/* Delete Button */}
         <button
           onClick={() => onDelete(event.id)}
-          className="px-4 py-1 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200"
+          className="flex items-center gap-1 px-4 py-1.5 text-sm text-red-600 bg-red-50 border border-red-200 rounded hover:bg-red-100 transition"
         >
-          Delete
+          <Trash2 size={16} /> Delete
         </button>
 
-        {/* Archived */}
+        {/* Archive / Unarchive Button */}
         <button
           onClick={() => onToggleArchive(event.id)}
-          className={`px-4 py-1 text-sm rounded ${
+          className={`flex items-center gap-1 px-4 py-1.5 text-sm rounded transition ${
             event.archived
-              ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-yellow-50 text-yellow-700 border border-yellow-200 hover:bg-yellow-100"
+              : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
           }`}
         >
+          {event.archived ? (
+            <ArchiveRestore size={16} />
+          ) : (
+            <Archive size={16} />
+          )}
           {event.archived ? "Unarchive" : "Archive"}
         </button>
       </div>

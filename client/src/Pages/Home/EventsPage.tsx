@@ -53,24 +53,39 @@ const EventsPage: React.FC = () => {
     setEvents((prev) =>
       prev.map((e) => (e.id === id ? { ...e, archived: !e.archived } : e))
     );
-    // Optionally:PUT request to persist archive status
+    // Optionally: PUT request to persist archive status
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center">My Events</h1>
-      {events.map((event) => (
-        <EventCard
-          key={event.id}
-          event={event}
-          onDelete={handleDelete}
-          onToggleArchive={handleArchiveToggle}
-        />
-      ))}
+    <div className="min-h-screen bg-gradient-to-br from-[#00771a] to-[#5f2801] text-white px-4 py-10">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-center text-4xl font-bold mb-6">📅 My Events</h1>
 
-      <Link to="/addEventForm">
-        <button className="btn text-xl">Add Events</button>
-      </Link>
+        <div className="grid gap-4">
+          {events.length > 0 ? (
+            events.map((event) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                onDelete={handleDelete}
+                onToggleArchive={handleArchiveToggle}
+              />
+            ))
+          ) : (
+            <p className="text-center text-gray-300 mt-10">
+              No events found. Please add some.
+            </p>
+          )}
+        </div>
+
+        <div className="text-center mt-8">
+          <Link to="/addEventForm">
+            <button className="btn text-lg px-6 py-2 rounded-sm shadow hover:shadow-lg transition duration-300 font-bold">
+              ➕ Add Event
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };

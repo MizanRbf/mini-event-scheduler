@@ -6,7 +6,7 @@ const events: any[] = [];
 
 const router = Router();
 
-// ✅ GET all events
+// GET all events
 router.get("/", (req, res) => {
   res.json(events);
 });
@@ -37,5 +37,19 @@ router.post("/", (req, res) => {
   events.push(event);
   res.status(201).json(event);
 });
+
+// DELETE event by id
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  const index = events.findIndex(event => event.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ message: "Event not found" });
+  }
+
+  events.splice(index, 1); // remove from array
+  res.status(200).json({ message: "Event deleted successfully" });
+});
+
 
 export default router;
