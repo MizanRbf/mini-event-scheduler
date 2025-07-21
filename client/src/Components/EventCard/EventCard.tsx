@@ -21,7 +21,7 @@ const EventCard: React.FC<EventProps> = ({
   onToggleArchive,
 }) => {
   return (
-    <div className="bg-white border border-gray-200 shadow-sm rounded-lg p-5 transition-all hover:shadow-md">
+    <div className="bg-white border border-gray-200 shadow-sm rounded-sm p-5 transition-all hover:shadow-md">
       <div className="flex justify-between items-start mb-2">
         <div>
           <h2 className="text-xl font-bold text-gray-800">{event.title}</h2>

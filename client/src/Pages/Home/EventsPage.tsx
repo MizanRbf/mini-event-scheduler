@@ -49,17 +49,31 @@ const EventsPage: React.FC = () => {
   };
 
   // Handle Archived
-  const handleArchiveToggle = (id: string) => {
-    setEvents((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, archived: !e.archived } : e))
-    );
-    // Optionally: PUT request to persist archive status
+  const handleArchiveToggle = async (id: string) => {
+    try {
+      const eventToUpdate = events.find((e) => e.id === id);
+      if (!eventToUpdate) return;
+
+      const updatedArchivedStatus = !eventToUpdate.archived;
+
+      await axios.put(`http://localhost:3000/events/${id}`, {
+        archived: updatedArchivedStatus,
+      });
+
+      setEvents((prev) =>
+        prev.map((e) =>
+          e.id === id ? { ...e, archived: updatedArchivedStatus } : e
+        )
+      );
+    } catch (error) {
+      console.log("Error archiving event:", error);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#00771a] to-[#5f2801] text-white px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-[#36014b] to-[#030129] text-white px-4 py-10">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-center text-4xl font-bold mb-6">📅 My Events</h1>
+        <p className="text-center text-4xl font-bold mb-6">📅 My Events</p>
 
         <div className="grid gap-4">
           {events.length > 0 ? (
@@ -72,7 +86,7 @@ const EventsPage: React.FC = () => {
               />
             ))
           ) : (
-            <p className="text-center text-gray-300 mt-10">
+            <p className="text-center text-lg text-gray-300 mt-10">
               No events found. Please add some.
             </p>
           )}

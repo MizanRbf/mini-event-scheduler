@@ -6,11 +6,7 @@ const events: any[] = [];
 
 const router = Router();
 
-// GET all events
-router.get("/", (req, res) => {
-  res.json(events);
-});
-
+// POST events
 router.post("/", (req, res) => {
   const { title, notes } = req.body;
 
@@ -38,7 +34,27 @@ router.post("/", (req, res) => {
   res.status(201).json(event);
 });
 
-// DELETE event by id
+// GET all events
+router.get("/", (req, res) => {
+  res.json(events);
+});
+
+// UPDATE events by id
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { archived } = req.body;
+
+  const index = events.findIndex((e) => e.id === id);
+  if (index === -1) {
+    return res.status(404).json({ message: "Event not found" });
+  }
+
+  events[index].archived = archived;
+  res.status(200).json({ message: "Archived status updated", event: events[index] });
+});
+
+
+// DELETE events by id
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
   const index = events.findIndex(event => event.id === id);

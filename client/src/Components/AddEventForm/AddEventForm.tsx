@@ -88,7 +88,7 @@ const AddEventForm: React.FC = () => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 p-4 bg-white rounded-xl shadow"
+        className="space-y-4 p-4 bg-white rounded-sm shadow text-black"
       >
         <h1 className="text-center">Add New Event</h1>
 
@@ -132,7 +132,10 @@ const AddEventForm: React.FC = () => {
         <CategoryDisplay category={formData.category} />
 
         {/* Submit Button */}
-        <button type="submit" className="btn btn-primary w-full">
+        <button
+          type="submit"
+          className="btn bg-gradient-to-br from-[#5f0085] to-[#030129] text-white w-full"
+        >
           Add Event
         </button>
       </form>
