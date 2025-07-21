@@ -10,19 +10,59 @@ const router = Router();
 router.post("/", (req, res) => {
   const { title, notes } = req.body;
 
-
   // Simple AI implement
   const text = `${title} ${notes || ""}`.toLowerCase();
+
+  // Work Keywords
+  const workKeywords = [
+    "meeting",
+    "project",
+    "client",
+    "deadline",
+    "presentation",
+    "call",
+    "zoom",
+    "standup",
+    "interview",
+    "briefing",
+    "office",
+    "team",
+    "workshop",
+    "proposal",
+    "review",
+    "report",
+    "task",
+    "performance",
+  ];
+
+  // Personal Keywords
+  const personalKeywords = [
+    "birthday",
+    "family",
+    "anniversary",
+    "dinner",
+    "lunch",
+    "outing",
+    "gathering",
+    "friend",
+    "shopping",
+    "hangout",
+    "picnic",
+    "date",
+    "celebration",
+    "wedding",
+    "visit",
+    "trip",
+  ];
+
   let category: "Work" | "Personal" | "Other" = "Other";
 
-  if (text.includes("meeting") || text.includes("project")) {
+  if (workKeywords.some((word) => text.includes(word))) {
     category = "Work";
-  } else if (text.includes("birthday") || text.includes("family")) {
+  } else if (personalKeywords.some((word) => text.includes(word))) {
     category = "Personal";
   }
 
-
-  
   const event = {
     id: uuidv4(),
     ...req.body,
@@ -44,7 +84,6 @@ router.get("/", (req, res) => {
   res.json(sortedEvents);
 });
 
-
 // UPDATE events by id
 router.put("/:id", (req, res) => {
   const { id } = req.params;
@@ -56,14 +95,15 @@ router.put("/:id", (req, res) => {
   }
 
   events[index].archived = archived;
-  res.status(200).json({ message: "Archived status updated", event: events[index] });
+  res
+    .status(200)
+    .json({ message: "Archived status updated", event: events[index] });
 });
-
 
 // DELETE events by id
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
-  const index = events.findIndex(event => event.id === id);
+  const index = events.findIndex((event) => event.id === id);
 
   if (index === -1) {
     return res.status(404).json({ message: "Event not found" });
@@ -72,6 +112,5 @@ router.delete("/:id", (req, res) => {
   events.splice(index, 1); // remove from array
   res.status(200).json({ message: "Event deleted successfully" });
 });
-
 
 export default router;

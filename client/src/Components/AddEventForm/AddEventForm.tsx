@@ -138,7 +138,7 @@ const AddEventForm: React.FC = () => {
             type="submit"
             className="btn bg-gradient-to-br from-[#5f0085] to-[#030129] text-lg text-white w-full rounded-full"
           >
-            Add
+            Add Now
           </button>
         </div>
       </form>
