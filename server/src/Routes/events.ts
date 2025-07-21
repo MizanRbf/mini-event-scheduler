@@ -36,8 +36,14 @@ router.post("/", (req, res) => {
 
 // GET all events
 router.get("/", (req, res) => {
-  res.json(events);
+  const sortedEvents = [...events].sort((a, b) => {
+    const dateA = new Date(`${a.date}T${a.time}`);
+    const dateB = new Date(`${b.date}T${b.time}`);
+    return dateA.getTime() - dateB.getTime();
+  });
+  res.json(sortedEvents);
 });
+
 
 // UPDATE events by id
 router.put("/:id", (req, res) => {

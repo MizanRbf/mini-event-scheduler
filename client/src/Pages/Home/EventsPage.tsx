@@ -24,13 +24,7 @@ const EventsPage: React.FC = () => {
         const res = await axios.get<EventType[]>(
           "http://localhost:3000/events"
         );
-
-        const sorted = res.data.sort(
-          (a, b) =>
-            new Date(`${a.date}T${a.time}`).getTime() -
-            new Date(`${b.date}T${b.time}`).getTime()
-        );
-        setEvents(sorted);
+        setEvents(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -71,33 +65,36 @@ const EventsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#36014b] to-[#030129] text-white px-4 py-10">
-      <div className="max-w-3xl mx-auto">
-        <p className="text-center text-4xl font-bold mb-6">📅 My Events</p>
+    <div className="min-h-screen bg-gradient-to-br from-[#001950] to-[#100014] text-white px-4 py-10">
+      <div className="border rounded-sm border-[#7b56d3] max-w-3xl mx-auto">
+        <p className="text-center text-3xl font-bold py-5 bg-[#4f3ee7]">
+          📅 My Events
+        </p>
+        <div className="m-4">
+          <div className="grid gap-2">
+            {events.length > 0 ? (
+              events.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  onDelete={handleDelete}
+                  onToggleArchive={handleArchiveToggle}
+                />
+              ))
+            ) : (
+              <p className="text-center text-lg text-gray-300 mt-10">
+                No events found. Please add some.
+              </p>
+            )}
+          </div>
 
-        <div className="grid gap-4">
-          {events.length > 0 ? (
-            events.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                onDelete={handleDelete}
-                onToggleArchive={handleArchiveToggle}
-              />
-            ))
-          ) : (
-            <p className="text-center text-lg text-gray-300 mt-10">
-              No events found. Please add some.
-            </p>
-          )}
-        </div>
-
-        <div className="text-center mt-8">
-          <Link to="/addEventForm">
-            <button className="btn text-lg px-6 py-2 rounded-sm shadow hover:shadow-lg transition duration-300 font-bold">
-              ➕ Add Event
-            </button>
-          </Link>
+          <div className="text-center mt-8">
+            <Link to="/addEventForm">
+              <button className="btn text-lg px-6 py-2 rounded-full shadow hover:shadow-lg transition duration-300 font-bold">
+                ➕ Add Event
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -88,56 +88,59 @@ const AddEventForm: React.FC = () => {
     <div>
       <form
         onSubmit={handleSubmit}
-        className="space-y-4 p-4 bg-white rounded-sm shadow text-black"
+        className=" bg-white rounded-sm shadow text-black"
       >
-        <h1 className="text-center">Add New Event</h1>
+        <p className="text-center text-3xl font-bold py-5 text-white bg-[#4f3ee7]">
+          Add New Event
+        </p>
+        <div className="space-y-4 p-4">
+          {/* Event Title */}
+          <FormInput
+            type="text"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="Event Title"
+            required
+          />
 
-        {/* Event Title */}
-        <FormInput
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          placeholder="Event Title"
-          required
-        />
+          {/* Event Date */}
+          <FormInput
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            required
+          />
 
-        {/* Event Date */}
-        <FormInput
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          required
-        />
+          {/* Event Time */}
+          <FormInput
+            type="time"
+            name="time"
+            value={formData.time}
+            onChange={handleChange}
+            required
+          />
 
-        {/* Event Time */}
-        <FormInput
-          type="time"
-          name="time"
-          value={formData.time}
-          onChange={handleChange}
-          required
-        />
+          {/* Event Notes */}
+          <FormTextarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            placeholder="Additional Notes"
+          />
 
-        {/* Event Notes */}
-        <FormTextarea
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-          placeholder="Additional Notes"
-        />
+          {/* Event Category */}
+          <CategoryDisplay category={formData.category} />
 
-        {/* Event Category */}
-        <CategoryDisplay category={formData.category} />
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="btn bg-gradient-to-br from-[#5f0085] to-[#030129] text-white w-full"
-        >
-          Add Event
-        </button>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="btn bg-gradient-to-br from-[#5f0085] to-[#030129] text-lg text-white w-full rounded-full"
+          >
+            Add
+          </button>
+        </div>
       </form>
     </div>
   );

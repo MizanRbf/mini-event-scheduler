@@ -17,7 +17,7 @@ const FormTextarea: React.FC<FormTextareaProps> = ({
     <textarea
       name={name}
       value={value}
-      className="textarea textarea-bordered w-full"
+      className="textarea textarea-bordered border-[#5f0085] w-full"
       onChange={onChange}
       placeholder={placeholder}
     ></textarea>
