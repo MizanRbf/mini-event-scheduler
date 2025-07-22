@@ -16,7 +16,13 @@ type EventType = {
 
 const EventsPage: React.FC = () => {
   const [events, setEvents] = useState<EventType[]>([]);
+  const [selectCategory, setSelectCategory] = useState<string>("All");
 
+  // Filter Implement
+  const filteredEvents =
+    selectCategory === "All"
+      ? events
+      : events.filter((e) => e.category === selectCategory);
   // Fetch Events
   useEffect(() => {
     const fetchEvents = async () => {
@@ -67,13 +73,46 @@ const EventsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#001950] to-[#100014] text-white px-4 py-10">
       <div className="border rounded-sm border-[#7b56d3] max-w-3xl mx-auto">
-        <p className="text-center text-3xl font-bold py-5 bg-[#4f3ee7]">
-          📅 My Events
-        </p>
+        <div className="flex justify-between py-5 bg-[#4f3ee7]">
+          <p className="text-3xl font-bold ">📅 My Events</p>
+          <div className="mb-4 text-center">
+            <label className="mr-2 font-semibold">Filter by Category:</label>
+            <select
+              value={selectCategory}
+              onChange={(e) => setSelectCategory(e.target.value)}
+              className="border py-2 px-10 rounded-sm"
+            >
+              <option className="text-black" value="All">
+                All
+              </option>
+              <option className="text-black" value="Work">
+                Work
+              </option>
+              <option className="text-black" value="Personal">
+                Personal
+              </option>
+              <option className="text-black" value="health">
+                Health
+              </option>
+              <option className="text-black" value="finance">
+                Finance
+              </option>
+              <option className="text-black" value="home">
+                Home
+              </option>
+              <option className="text-black" value="education">
+                Education
+              </option>
+              <option className="text-black" value="Other">
+                Other
+              </option>
+            </select>
+          </div>
+        </div>
         <div className="m-4">
           <div className="grid gap-2">
             {events.length > 0 ? (
-              events.map((event) => (
+              filteredEvents.map((event) => (
                 <EventCard
                   key={event.id}
                   event={event}

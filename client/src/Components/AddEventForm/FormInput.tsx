@@ -15,7 +15,6 @@ const FormInput: React.FC<FormInputProps> = ({
   value,
   onChange,
   placeholder,
-  required,
 }) => {
   return (
     <input
@@ -25,7 +24,6 @@ const FormInput: React.FC<FormInputProps> = ({
       className="input input-bordered shadow border-gray-200 focus:outline-0 w-full"
       onChange={onChange}
       placeholder={placeholder}
-      required={required}
     />
   );
 };

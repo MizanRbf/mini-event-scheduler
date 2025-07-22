@@ -36,16 +36,40 @@ const AddEventForm: React.FC = () => {
     e.preventDefault();
     const { title, date, time } = formData;
 
-    if (!title || !date || !time) {
+    // Empty field check
+    if (!title.trim() || !date || !time) {
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: "Title, date and time are required.",
+        title: "Invalid Input",
+        text: "Title, date, and time are required.",
       });
       return;
     }
 
-    // Data post to Server
+    // Title must have at least 3 characters
+    if (title.trim().length < 3) {
+      Swal.fire({
+        icon: "warning",
+        title: "Too Short!",
+        text: "Title must be at least 3 characters.",
+      });
+      return;
+    }
+
+    // Date must be today or future
+    const selectedDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (selectedDate < today) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Date",
+        text: "Date must be today or in the future.",
+      });
+      return;
+    }
+
+    // Proceed if everything is valid
     try {
       const res = await axios.post("http://localhost:3000/events", {
         title: formData.title,
@@ -63,7 +87,6 @@ const AddEventForm: React.FC = () => {
         category: newEvent.category || "",
       });
 
-      // Success Alert
       await Swal.fire({
         icon: "success",
         title: "Event Created!",
@@ -75,7 +98,6 @@ const AddEventForm: React.FC = () => {
       navigate("/");
     } catch (err) {
       console.error(err);
-      // Error Alert
       Swal.fire({
         icon: "error",
         title: "Error",
